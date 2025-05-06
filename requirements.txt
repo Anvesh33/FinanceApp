@@ -16,3 +16,17 @@ pypdf
 google-generativeai
 huggingface-hub
 sentence-transformers
+streamlit
+plotly
+streamlit
+pandas
+yfinance
+plotly
+requests
+openai
+numpy
+matplotlib
+statsmodels
+scikit-learn
+tensorflow
+google-genai

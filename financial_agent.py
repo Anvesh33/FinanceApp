@@ -682,40 +682,40 @@ finance_agent = Agent(
 )
 
 ## Chatbot Agent with Web Search Capability
-chatbot_agent = Agent(
-    name="Finance Chatbot Agent",
-    model=Groq(id="meta-llama/llama-4-maverick-17b-128e-instruct"),
-    tools=[DuckDuckGoTools()],
-    instructions=[
-        "ALWAYS organize and present data in tables wherever possible",
-        "Provide clear and concise answers to finance-related questions",
-        "Include sources when fetching real-time data",
-        "Structure responses with headings and tables - avoid bullet points where tables can be used instead",
-        "For investment advice, always include timing considerations and risk factors in tabular format",
-        "Use emojis sparingly to highlight important points",
-        "Include a 'Key Takeaways' section at the end of comprehensive responses in a table format"
-    ],
-    show_tool_calls=True,
-    markdown=True,
-)
+# chatbot_agent = Agent(
+#     name="Finance Chatbot Agent",
+#     model=Groq(id="meta-llama/llama-4-maverick-17b-128e-instruct"),
+#     tools=[DuckDuckGoTools()],
+#     instructions=[
+#         "ALWAYS organize and present data in tables wherever possible",
+#         "Provide clear and concise answers to finance-related questions",
+#         "Include sources when fetching real-time data",
+#         "Structure responses with headings and tables - avoid bullet points where tables can be used instead",
+#         "For investment advice, always include timing considerations and risk factors in tabular format",
+#         "Use emojis sparingly to highlight important points",
+#         "Include a 'Key Takeaways' section at the end of comprehensive responses in a table format"
+#     ],
+#     show_tool_calls=True,
+#     markdown=True,
+# )
 
-multi_chatbot_agent = Agent(
-    team=[chatbot_agent, web_search_agent],
-    model=Groq(id="meta-llama/llama-4-maverick-17b-128e-instruct"),
-    instructions=[
-        "ALWAYS present information in tables - consider this a strict requirement",
-        "Always include sources with dates in tabular format",
-        "Structure output with clear headings and tables for each section",
-        "First use Finance Chatbot Agent to answer the question",
-        "Then use the Web Search Agent for recent news",
-        "Present a unified analysis that combines fundamental data with recent news in tabular format",
-        "Include timing guidance (when to buy/sell) based on technical indicators and news sentiment in a table",
-        "Clearly separate fact-based information from AI-generated analysis using separate tables",
-        "End with actionable insights and key takeaways presented in a table"
-    ],
-    show_tool_calls=True,
-    markdown=True,
-)
+# multi_chatbot_agent = Agent(
+#     team=[chatbot_agent, web_search_agent],
+#     model=Groq(id="meta-llama/llama-4-maverick-17b-128e-instruct"),
+#     instructions=[
+#         "ALWAYS present information in tables - consider this a strict requirement",
+#         "Always include sources with dates in tabular format",
+#         "Structure output with clear headings and tables for each section",
+#         "First use Finance Chatbot Agent to answer the question",
+#         "Then use the Web Search Agent for recent news",
+#         "Present a unified analysis that combines fundamental data with recent news in tabular format",
+#         "Include timing guidance (when to buy/sell) based on technical indicators and news sentiment in a table",
+#         "Clearly separate fact-based information from AI-generated analysis using separate tables",
+#         "End with actionable insights and key takeaways presented in a table"
+#     ],
+#     show_tool_calls=True,
+#     markdown=True,
+# )
 
 
 # Combined Multi-Agent System
@@ -844,10 +844,11 @@ with tabs[1]:  # AI Assistant Tab
                 st.session_state.chat_history.append({"role": "user", "content": user_question})
                 
                 # Get AI response
-                response = multi_chatbot_agent.run(user_question)
+                gemini_chat_model = Gemini(id="gemini-2.0-flash")
+                ai_response = gemini_chat_model.chat(user_question)
                 
                 # Add AI response to history
-                st.session_state.chat_history.append({"role": "ai", "content": response.content})
+                st.session_state.chat_history.append({"role": "ai", "content": ai_response.content})
                 
             except Exception as e:
                 st.error(f"Error: {e}")
